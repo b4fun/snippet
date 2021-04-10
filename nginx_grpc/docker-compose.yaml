@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+    nginx:
+        image: nginx:1.19.9-alpine
+        ports:
+            - "50051:80"
+        depends_on:
+            - backend_server_block
+            - backend_server_default
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        command: ["nginx-debug", "-g", "daemon off;"]
+    
+    backend_server_block:
+        image: b4fun/nginx_grpc_example_greeter_server:latest
+        ports:
+            - "50051"
+        environment:
+            - SERVER_TYPE=block
+
+    backend_server_default:
+        image: b4fun/nginx_grpc_example_greeter_server:latest
+        ports:
+            - "50051"
