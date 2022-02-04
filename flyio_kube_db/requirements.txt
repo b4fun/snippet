@@ -1,0 +1,2 @@
+dnspython==2.2.0
+psycopg2==2.9.3
