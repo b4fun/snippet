@@ -6,7 +6,7 @@ import psycopg2
 import time
 
 
-logging.basicConfig()
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('flyio_kube_db')
 logger.setLevel(logging.INFO)
 
@@ -83,7 +83,7 @@ def main():
             cur.execute("""SELECT datname from pg_database""")
             rows = cur.fetchall()
             for row in rows:
-                print(f'fetched row: f{row[0]}')
+                logger.info(f'fetched row: f{row[0]}')
         conn.close()
 
         time.sleep(5)
