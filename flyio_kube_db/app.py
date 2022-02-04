@@ -6,13 +6,15 @@ import psycopg2
 import time
 
 
+logging.basicConfig()
 logger = logging.getLogger('flyio_kube_db')
+logger.setLevel(logging.INFO)
 
 
 @dataclasses.dataclass
 class Config:
     """Config specifies the application configuration."""
-    
+
     # DNS address for the flyio DNS
     flyio_dns: str
     # postgresql db host
