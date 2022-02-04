@@ -46,9 +46,13 @@ def resolve_db_host(config: Config) -> str:
     """Resolves db host with fly DNS."""
     flyio_resolver = dns.resolver.Resolver()
     flyio_resolver.nameservers = [config.flyio_dns]
-    answers = flyio_resolver.resolve(config.db_host, 'aaaa')
-    for answer in answers:
-        return answer.to_text()
+    for _ in range(2):
+        try:
+            answers = flyio_resolver.resolve(config.db_host, 'aaaa')
+            for answer in answers:
+                return answer.to_text()
+        except dns.resolver.LifetimeTimeout as exc:
+            logger.warning(f'dns resolve timedout: {exc}, retrying')
     raise RuntimeError(f'no AAAA records resolved for {config.db_host}')
 
 
